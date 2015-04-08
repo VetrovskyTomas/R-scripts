@@ -10,7 +10,7 @@ NT <- T/rowSums(T)
 NT.nmds <- metaMDS(NT)
 #stressplot(NT.nmds)
 
-pdf("NMMDS.pdf")
+pdf("NMDS.pdf")
 plot(NT.nmds)
 orditorp(NT.nmds,display="sites",cex=1.0,air=0.01)
 dev.off()
