@@ -1,0 +1,49 @@
+#install.packages("vegan")
+library(vegan)
+setwd("/mnt/tomas2/reads_by_contigs")
+#setwd("A:/LAB/aDiNA/Prilba_Counts")
+#setwd("A:/LAB/aDiNA/SCRIPTS")
+
+T <- read.csv("summary-count.min5.tsv",header=TRUE,row.names=1,sep="\t")
+T <- t(T)
+NT <- T/rowSums(T)
+NT.nmds <- metaMDS(NT)
+#stressplot(NT.nmds)
+
+pdf("NMMDS.pdf")
+plot(NT.nmds)
+orditorp(NT.nmds,display="sites",cex=1.0,air=0.01)
+dev.off()
+
+pdf("NMMDS.pdf")
+fig <- ordiplot(NT.nmds, type = "none")
+points(fig, "sites", pch=21, col="red", bg="yellow")
+text(fig, "sites", col="blue", cex=0.3)
+#orditorp(NT.nmds,display="sites",cex=1.25,air=0.01)
+dev.off()
+
+###############################
+### ENV vars ##################
+###############################
+fig <- ordiplot(NT.nmds, type = "none")
+points(fig, "sites", pch=21, col="red", bg="yellow")
+orditorp(NT.nmds,display="sites",col=c(rep("green",5),rep("blue",5)),air=0.01,cex=1.25)
+
+Env <- read.csv("env_variables.txt",header=TRUE,row.names=1,sep="\t")
+v <- Env$comb
+
+pal <- colorRampPalette(c("red","green","blue","orange"))(4)
+palette(pal)
+
+pdf("NMMDS.pdf")
+fig <- ordiplot(NT.nmds, type = "none")
+orditorp(NT.nmds,display="sites",cex=0.3,air=0.01)
+#points(fig, "sites", pch=21, col="red", bg="yellow")
+for (i in seq(1,25)) points (NT.nmds,"sites",select=(v==i),col=i,pch=19)
+dev.off()
+
+###############################
+#ordiplot(NT.nmds,type="n")
+#orditorp(NT.nmds,display="species",col="red",air=0.01)
+#orditorp(NT.nmds,display="sites",cex=1.25,air=0.01)
+#orditorp(NT.nmds,display="sites",cex=1.25,air=0.1)
